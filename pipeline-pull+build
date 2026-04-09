@@ -1,0 +1,32 @@
+pipeline {
+    agent any
+
+    stages {
+
+        stage('pull') {
+            steps {
+               git branch: 'main', url: 'https://github.com/omverma001/Easycrud-student-registration.git'
+            }
+        }
+
+        stage('build') {
+            steps {
+                sh '''cd backend
+                  mvn package -DskipTests'''
+            }
+        }
+
+        stage('test') {
+            steps {
+                echo 'tested'
+            }
+        }
+
+        stage('deploy') {
+            steps {
+                echo 'deployed'
+            }
+        }
+
+    }
+}
