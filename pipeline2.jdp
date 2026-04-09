@@ -5,7 +5,7 @@ pipeline {
 
         stage('pull') {
             steps {
-               echo 'pulled'
+               git branch: 'dev3', url: 'https://github.com/omverma001/my-project1.git'
             }
         }
 
