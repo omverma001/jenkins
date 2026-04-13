@@ -1,0 +1,40 @@
+pipeline {
+    agent any 
+
+    stages {
+
+        stage('pull') {
+            steps {
+                git branch: 'main', url: 'https://github.com/omverma001/CDEC-BATCH35-TERRAFORM.git'
+            }
+        }
+
+        stage('PLAN') {
+            steps {
+                sh '''
+                cd eks-cluster
+                terraform init
+                terraform plan
+                '''
+            }
+        }
+
+        stage('APPROVAL') {
+            steps {
+                timeout(time: 30, unit: 'SECONDS') {
+                    input message: 'Approval is required. Shall we proceed?', ok: 'Approve'
+                }
+            }
+        }
+
+        stage('APPLY') {
+            steps {
+                sh '''
+                cd eks-cluster
+                terraform apply --auto-approve
+                '''
+            }
+        }
+
+    }
+}
