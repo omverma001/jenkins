@@ -1,0 +1,55 @@
+pipeline {
+    agent any
+
+    stages {
+
+        stage('PULL') {
+            steps {
+                git branch: 'dev', url: 'https://github.com/omverma001/Easycrud-student-registration.git'
+            }
+        }
+
+        stage('FRONTEND-DOCKER-BUILD') {
+            steps {
+                sh '''
+                cd frontend
+                docker build -f dockerfile -t 9770495431/easycrud:auto-frontend .
+                '''
+            }
+        }
+
+        stage('BACKEND-DOCKER-BUILD') {
+            steps {
+                sh '''
+                cd backend
+                docker build -f dockerfile -t 9770495431/easycrud:auto-backend .
+                '''
+            }
+        }
+
+        stage('DOCKER-PUSH') {
+            steps {
+                sh '''
+                docker push 9770495431/easycrud:auto-frontend
+                docker push 9770495431/easycrud:auto-backend
+                '''
+            }
+        }
+
+        stage('DOCKER-CLEAN') {
+            steps {
+                sh '''
+                docker rmi -f 9770495431/easycrud:auto-frontend
+                docker rmi -f 9770495431/easycrud:auto-backend
+                '''
+            }
+        }
+
+        stage('DEPLOY') {
+            steps {
+                sh 'kubectl apply -f simple-deploy/'
+            }
+        }
+
+    }
+}
