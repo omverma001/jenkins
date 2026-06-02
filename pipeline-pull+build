@@ -21,7 +21,7 @@ pipeline {
                 withSonarQubeEnv(installationName: 'sonar' , credentialsId: 'sonar-cred') {
                 sh '''cd backend
             mvn clean compile
-            Mvn sonar:sonar  -Dsonar.projectKey=studentapp1'''
+            mvn sonar:sonar  -Dsonar.projectKey=studentapp1'''
 }
             }
         }
