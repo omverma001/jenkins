@@ -25,7 +25,13 @@ pipeline {
 }
             }
         }
-
+        stage('QUALITY-GATE'){
+           steps{
+               timeout(10) {
+            waitForQualityGate abortPipeline: true, credentialsId: 'sonar-ID'
+           }
+           }  
+        }
         stage('deploy') {
             steps {
                 echo 'deployed'
