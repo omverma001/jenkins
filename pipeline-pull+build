@@ -31,9 +31,9 @@ pipeline {
            }
            }  
         }
-        stage('deploy') {
+        stage('delivery') {
             steps {
-                echo 'deployed'
+                sh 'aws s3 cp backend/target/student-registration-backend-0.0.1-SNAPSHOT.jar  s3://jenkins-buxx/student.jar'
             }
         }
 
